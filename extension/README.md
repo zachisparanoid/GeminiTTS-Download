@@ -1,0 +1,83 @@
+# Gemini TTS Downloader
+
+Adds a **Download** option to the per-message 3-dot menu on `gemini.google.com`, saving the message's TTS ("Listen") audio as a file. The download is fetched directly from the network response — you don't have to wait for playback to finish.
+
+## Install (unpacked)
+
+1. Open `chrome://extensions`
+2. Toggle **Developer mode** on (top-right)
+3. Click **Load unpacked**
+4. Select the `extension/` directory in this repo
+5. Visit `https://gemini.google.com/`, hover over an assistant message, click the 3-dot menu — **Download** appears next to **Listen**
+
+## How it works
+
+- A content script watches the chat DOM and injects a **Download** menu item next to **Listen**.
+- A page-world script monkey-patches `window.fetch` so it can `tee()` the TTS audio response stream when you click Download. This lets the audio download in the background at network speed (typically a few seconds, not the full playback duration).
+- The audio element is muted while downloading so playback is silent.
+- The captured Blob is handed to the service worker, which calls `chrome.downloads.download` with a filename like `<conversation-title>-<message-index>.mp3`.
+
+## Debug logging
+
+Open DevTools on `gemini.google.com` and run:
+
+```js
+localStorage.geminiTTSDebug = '1'
+```
+
+Reload the page. All three contexts (page world, content script, service worker) will emit `[gemini-tts:*]` logs at every step.
+
+To disable: `delete localStorage.geminiTTSDebug` and reload.
+
+## Manual test checklist
+
+- [ ] Short message (one sentence) — downloads quickly
+- [ ] Long message (multiple paragraphs) — downloads faster than playback duration
+- [ ] Message containing code blocks
+- [ ] Message in middle of a long conversation (correct message-index in filename)
+- [ ] Two downloads in quick succession (no interference)
+- [ ] Download triggered while another audio is already playing
+- [ ] First message in a brand-new conversation (filename falls back gracefully if no title)
+- [ ] Conversation with non-ASCII title (Unicode handled)
+- [ ] DevTools Console shows no errors
+
+## Filename module tests
+
+```bash
+cd extension
+npm install
+npm test
+```
+
+## Replace the placeholder icons
+
+The included icons are generated placeholders (a white "G" on a deep blue square). To replace:
+
+1. Drop your own `icon-16.png`, `icon-48.png`, `icon-128.png` into `extension/icons/`
+2. Reload the extension at `chrome://extensions`
+
+To regenerate the placeholders (Windows):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File extension/icons/make-icons.ps1
+```
+
+## Project layout
+
+```
+extension/
+├── manifest.json
+├── service-worker.js     # MV3 service worker — owns chrome.downloads
+├── content-script.js     # isolated world — DOM observer, menu injection, toast UI
+├── injected.js           # page world — fetch monkey-patch + tee + mute
+├── filename.js           # pure helper used by content-script
+├── icons/                # extension icons + generator script
+└── tests/
+    └── filename.test.js  # unit tests for filename composition
+```
+
+## Limitations / known caveats
+
+- If Google renames or restructures the 3-dot menu DOM, the menu-injection selector may need updates. All selectors live in a single `SELECTORS` object at the top of `content-script.js`.
+- If Google switches TTS delivery to `MediaSource` chunks instead of a fetch response, the capture path will need a fallback (documented in the design spec under Approach C).
+- A 30-second timeout is enforced — if no audio response arrives in that window, the download is abandoned with a toast error.

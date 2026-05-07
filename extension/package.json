@@ -1,0 +1,9 @@
+{
+  "name": "gemini-tts-downloader",
+  "version": "0.1.0",
+  "description": "Chrome extension for downloading Google Gemini TTS audio.",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/filename.test.js"
+  }
+}
