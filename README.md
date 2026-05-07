@@ -1,4 +1,4 @@
-<h1 align="center">ttsave</h1>
+<h1 align="center">Gemini TTS Downloader</h1>
 
 <p align="center">
   <strong>Download Google Gemini's "Listen" TTS audio responses as files.</strong><br>
@@ -6,11 +6,11 @@
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/zachisparanoid/ttsave?style=flat-square&color=blue" alt="License"></a>
-  <a href="https://github.com/zachisparanoid/ttsave/stargazers"><img src="https://img.shields.io/github/stars/zachisparanoid/ttsave?style=flat-square&color=yellow" alt="Stars"></a>
-  <a href="https://github.com/zachisparanoid/ttsave/network/members"><img src="https://img.shields.io/github/forks/zachisparanoid/ttsave?style=flat-square&color=orange" alt="Forks"></a>
-  <a href="https://github.com/zachisparanoid/ttsave/issues"><img src="https://img.shields.io/github/issues/zachisparanoid/ttsave?style=flat-square&color=red" alt="Issues"></a>
-  <a href="https://github.com/zachisparanoid/ttsave/commits/main"><img src="https://img.shields.io/github/last-commit/zachisparanoid/ttsave?style=flat-square" alt="Last commit"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/zachisparanoid/GeminiTTS-Download?style=flat-square&color=blue" alt="License"></a>
+  <a href="https://github.com/zachisparanoid/GeminiTTS-Download/stargazers"><img src="https://img.shields.io/github/stars/zachisparanoid/GeminiTTS-Download?style=flat-square&color=yellow" alt="Stars"></a>
+  <a href="https://github.com/zachisparanoid/GeminiTTS-Download/network/members"><img src="https://img.shields.io/github/forks/zachisparanoid/GeminiTTS-Download?style=flat-square&color=orange" alt="Forks"></a>
+  <a href="https://github.com/zachisparanoid/GeminiTTS-Download/issues"><img src="https://img.shields.io/github/issues/zachisparanoid/GeminiTTS-Download?style=flat-square&color=red" alt="Issues"></a>
+  <a href="https://github.com/zachisparanoid/GeminiTTS-Download/commits/main"><img src="https://img.shields.io/github/last-commit/zachisparanoid/GeminiTTS-Download?style=flat-square" alt="Last commit"></a>
   <img src="https://img.shields.io/badge/Manifest-V3-brightgreen?style=flat-square" alt="Manifest V3">
   <img src="https://img.shields.io/badge/Chrome-supported-4285F4?style=flat-square&logo=googlechrome&logoColor=white" alt="Chrome">
 </p>
@@ -47,8 +47,8 @@ The extension is not (yet) on the Chrome Web Store. To install from source:
 
 1. Clone this repo
    ```bash
-   git clone https://github.com/zachisparanoid/ttsave.git
-   cd ttsave
+   git clone https://github.com/zachisparanoid/GeminiTTS-Download.git
+   cd GeminiTTS-Download
    ```
 2. Open `chrome://extensions` in Chrome
 3. Toggle **Developer mode** on (top-right)
@@ -129,6 +129,6 @@ If a Gemini DOM change breaks the extension, the fix is usually one regex in `SE
 
 ## Star history
 
-<a href="https://star-history.com/#zachisparanoid/ttsave&Date">
-  <img src="https://api.star-history.com/svg?repos=zachisparanoid/ttsave&type=Date" alt="Star History Chart">
+<a href="https://star-history.com/#zachisparanoid/GeminiTTS-Download&Date">
+  <img src="https://api.star-history.com/svg?repos=zachisparanoid/GeminiTTS-Download&type=Date" alt="Star History Chart">
 </a>

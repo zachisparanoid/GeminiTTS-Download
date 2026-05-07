@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "ttsave — Gemini TTS Downloader",
+  "name": "Gemini TTS Downloader",
   "version": "0.1.0",
   "description": "Download Google Gemini's TTS (Listen) audio responses as files, without waiting for playback.",
   "icons": {
