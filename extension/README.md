@@ -52,9 +52,27 @@ npm test
 
 ## Branding and Assets
 
-The extension includes high-quality icons designed to match the Gemini aesthetic. Source SVG files and a full-size logo/banner can be found in the `/design` directory at the project root.
+The full-resolution logo and README banner live in the `design/` directory at the project root:
 
-To modify the icons, edit `design/logo.svg` and use an SVG-to-PNG converter to update the files in `extension/icons/`.
+- `design/logo.png` — 1254×1254 master logo
+- `design/banner.png` — 2172×724 README banner
+
+The extension's three required icon sizes (`extension/icons/icon-{16,48,128}.png`) are downscales of `design/logo.png`. To regenerate them after modifying the master logo, run this PowerShell snippet from the project root:
+
+```powershell
+Add-Type -AssemblyName System.Drawing
+$src = [System.Drawing.Image]::FromFile("$PWD\design\logo.png")
+foreach ($size in 16, 48, 128) {
+    $bmp = New-Object System.Drawing.Bitmap $size, $size
+    $g = [System.Drawing.Graphics]::FromImage($bmp)
+    $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+    $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
+    $g.DrawImage($src, 0, 0, $size, $size)
+    $bmp.Save("$PWD\extension\icons\icon-$size.png", [System.Drawing.Imaging.ImageFormat]::Png)
+    $g.Dispose(); $bmp.Dispose()
+}
+$src.Dispose()
+```
 
 ## Project layout
 
