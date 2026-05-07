@@ -52,16 +52,7 @@ npm test
 
 ## Replace the placeholder icons
 
-The included icons are generated placeholders (a white "G" on a deep blue square). To replace:
-
-1. Drop your own `icon-16.png`, `icon-48.png`, `icon-128.png` into `extension/icons/`
-2. Reload the extension at `chrome://extensions`
-
-To regenerate the placeholders (Windows):
-
-```powershell
-powershell -ExecutionPolicy Bypass -File extension/icons/make-icons.ps1
-```
+The included icons are placeholders (a white "G" on a deep blue square). To replace, drop your own `icon-16.png`, `icon-48.png`, `icon-128.png` into `extension/icons/` and reload the extension at `chrome://extensions`.
 
 ## Project layout
 

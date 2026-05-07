@@ -81,7 +81,7 @@ For more detail, see [`extension/README.md`](extension/README.md).
 3. While capture is in flight, `HTMLMediaElement.prototype.play` is short-circuited so no audio actually plays.
 4. The bytes are passed back to the content script (via `window.postMessage` with a transferable ArrayBuffer), wrapped in a Blob, and triggered as a download via a hidden `<a download>` anchor click.
 
-Full design doc: [`docs/superpowers/specs/2026-05-06-gemini-tts-downloader-design.md`](docs/superpowers/specs/2026-05-06-gemini-tts-downloader-design.md)
+For implementation details, the source files are heavily commented — start with [`extension/content-script.js`](extension/content-script.js) and [`extension/injected.js`](extension/injected.js).
 
 ## Built with
 
@@ -117,9 +117,9 @@ No `downloads`, no `tabs`, no `storage`, no `notifications`. The download itself
 
 ## Contributing
 
-Issues and PRs welcome. The codebase is small (≈700 lines of JS total) and the [design doc](docs/superpowers/specs/2026-05-06-gemini-tts-downloader-design.md) explains every architectural choice.
+Issues and PRs welcome. The codebase is small (≈700 lines of JS total) and source files are commented to explain architectural choices.
 
-If a Gemini DOM change breaks the extension, the fix is usually one regex in `SELECTORS` — please open a PR.
+If a Gemini DOM change breaks the extension, the fix is usually one regex in the `SELECTORS` object at the top of `extension/content-script.js` — please open a PR.
 
 ## License
 
