@@ -50,9 +50,11 @@ npm install
 npm test
 ```
 
-## Replace the placeholder icons
+## Branding and Assets
 
-The included icons are placeholders (a white "G" on a deep blue square). To replace, drop your own `icon-16.png`, `icon-48.png`, `icon-128.png` into `extension/icons/` and reload the extension at `chrome://extensions`.
+The extension includes high-quality icons designed to match the Gemini aesthetic. Source SVG files and a full-size logo/banner can be found in the `/design` directory at the project root.
+
+To modify the icons, edit `design/logo.svg` and use an SVG-to-PNG converter to update the files in `extension/icons/`.
 
 ## Project layout
 

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="design/banner.png" alt="Gemini TTS Downloader Banner" width="800">
+</p>
+
 <h1 align="center">Gemini TTS Downloader</h1>
 
 <p align="center">
