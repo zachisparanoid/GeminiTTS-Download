@@ -12,10 +12,11 @@ Adds a **Download** option to the per-message 3-dot menu on `gemini.google.com`,
 
 ## How it works
 
-- A content script watches the chat DOM and injects a **Download** menu item next to **Listen**.
-- A page-world script monkey-patches `window.fetch` so it can `tee()` the TTS audio response stream when you click Download. This lets the audio download in the background at network speed (typically a few seconds, not the full playback duration).
-- The audio element is muted while downloading so playback is silent.
-- The captured Blob is handed to the service worker, which calls `chrome.downloads.download` with a filename like `<conversation-title>-<message-index>.mp3`.
+- A **content script** watches the chat DOM and injects a **Download** menu item next to **Listen**.
+- A **page-world script** monkey-patches `URL.createObjectURL` so the moment Gemini constructs a Blob for a TTS response, we read its bytes via `blob.arrayBuffer()`. As a fallback, it also polls `<audio>` elements for `blob:` URLs in case the Blob was minted before our arm flag was set.
+- While capturing, `HTMLMediaElement.prototype.play` is short-circuited to a no-op so no audio actually plays.
+- The captured bytes are passed back to the content script via `window.postMessage` (with a transferable `ArrayBuffer`), wrapped in a Blob, and triggered as a download via a hidden `<a download>` element click. No service worker round-trip — Chrome's runtime messaging mangles `ArrayBuffer`s in MV3, so we sidestep it entirely.
+- File is named `<conversation-title>-<message-index>.<ext>`.
 
 ## Debug logging
 
@@ -67,9 +68,8 @@ powershell -ExecutionPolicy Bypass -File extension/icons/make-icons.ps1
 ```
 extension/
 ├── manifest.json
-├── service-worker.js     # MV3 service worker — owns chrome.downloads
-├── content-script.js     # isolated world — DOM observer, menu injection, toast UI
-├── injected.js           # page world — fetch monkey-patch + tee + mute
+├── content-script.js     # isolated world — DOM observer, menu injection, toast UI, blob → file save
+├── injected.js           # page world — URL.createObjectURL hook + audio play() suppression
 ├── filename.js           # pure helper used by content-script
 ├── icons/                # extension icons + generator script
 └── tests/

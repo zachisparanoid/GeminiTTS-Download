@@ -1,6 +1,4 @@
-<!-- Replace USERNAME and REPONAME placeholders once the GitHub repo exists. -->
-
-<h1 align="center">REPONAME</h1>
+<h1 align="center">ttsave</h1>
 
 <p align="center">
   <strong>Download Google Gemini's "Listen" TTS audio responses as files.</strong><br>
@@ -8,11 +6,11 @@
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/USERNAME/REPONAME?style=flat-square&color=blue" alt="License"></a>
-  <a href="https://github.com/USERNAME/REPONAME/stargazers"><img src="https://img.shields.io/github/stars/USERNAME/REPONAME?style=flat-square&color=yellow" alt="Stars"></a>
-  <a href="https://github.com/USERNAME/REPONAME/network/members"><img src="https://img.shields.io/github/forks/USERNAME/REPONAME?style=flat-square&color=orange" alt="Forks"></a>
-  <a href="https://github.com/USERNAME/REPONAME/issues"><img src="https://img.shields.io/github/issues/USERNAME/REPONAME?style=flat-square&color=red" alt="Issues"></a>
-  <a href="https://github.com/USERNAME/REPONAME/commits/main"><img src="https://img.shields.io/github/last-commit/USERNAME/REPONAME?style=flat-square" alt="Last commit"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/zachisparanoid/ttsave?style=flat-square&color=blue" alt="License"></a>
+  <a href="https://github.com/zachisparanoid/ttsave/stargazers"><img src="https://img.shields.io/github/stars/zachisparanoid/ttsave?style=flat-square&color=yellow" alt="Stars"></a>
+  <a href="https://github.com/zachisparanoid/ttsave/network/members"><img src="https://img.shields.io/github/forks/zachisparanoid/ttsave?style=flat-square&color=orange" alt="Forks"></a>
+  <a href="https://github.com/zachisparanoid/ttsave/issues"><img src="https://img.shields.io/github/issues/zachisparanoid/ttsave?style=flat-square&color=red" alt="Issues"></a>
+  <a href="https://github.com/zachisparanoid/ttsave/commits/main"><img src="https://img.shields.io/github/last-commit/zachisparanoid/ttsave?style=flat-square" alt="Last commit"></a>
   <img src="https://img.shields.io/badge/Manifest-V3-brightgreen?style=flat-square" alt="Manifest V3">
   <img src="https://img.shields.io/badge/Chrome-supported-4285F4?style=flat-square&logo=googlechrome&logoColor=white" alt="Chrome">
 </p>
@@ -49,8 +47,8 @@ The extension is not (yet) on the Chrome Web Store. To install from source:
 
 1. Clone this repo
    ```bash
-   git clone https://github.com/USERNAME/REPONAME.git
-   cd REPONAME
+   git clone https://github.com/zachisparanoid/ttsave.git
+   cd ttsave
    ```
 2. Open `chrome://extensions` in Chrome
 3. Toggle **Developer mode** on (top-right)
@@ -94,8 +92,8 @@ Full design doc: [`docs/superpowers/specs/2026-05-06-gemini-tts-downloader-desig
   <img src="https://img.shields.io/badge/no--build-needed-success?style=flat-square" alt="no build">
 </p>
 
-- Vanilla JavaScript, no bundler, no transpiler
-- Manifest V3 service worker (currently inactive — kept for future enhancements)
+- Vanilla JavaScript, no bundler, no transpiler, no dependencies
+- Manifest V3, content scripts only (no service worker — capture and save both happen in-page)
 - Filename module unit tests via Node's built-in `node:test`
 
 ## Run tests
@@ -107,10 +105,9 @@ npm test
 
 ## Permissions
 
-- `downloads` — currently unused (download is triggered via anchor click). Will be removed in a future cleanup.
-- `host_permissions: https://gemini.google.com/*` — only this origin
+- `host_permissions: https://gemini.google.com/*` — that's it.
 
-That's it. No telemetry, no remote calls, no data leaving your machine.
+No `downloads`, no `tabs`, no `storage`, no `notifications`. The download itself is triggered via a hidden `<a download>` element click, so no privileged API is required. No telemetry, no remote calls, no data leaving your machine.
 
 ## Limitations / known caveats
 
@@ -132,6 +129,6 @@ If a Gemini DOM change breaks the extension, the fix is usually one regex in `SE
 
 ## Star history
 
-<a href="https://star-history.com/#USERNAME/REPONAME&Date">
-  <img src="https://api.star-history.com/svg?repos=USERNAME/REPONAME&type=Date" alt="Star History Chart">
+<a href="https://star-history.com/#zachisparanoid/ttsave&Date">
+  <img src="https://api.star-history.com/svg?repos=zachisparanoid/ttsave&type=Date" alt="Star History Chart">
 </a>

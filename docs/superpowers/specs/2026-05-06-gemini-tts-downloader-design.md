@@ -194,3 +194,17 @@ When `localStorage.geminiTTSDebug === '1'`:
 10. Manual test pass against checklist
 
 Detailed step-by-step implementation plan to be produced by the writing-plans skill.
+
+---
+
+## Implementation deviations (2026-05-07)
+
+After the initial implementation, three changes from this design were necessary based on findings during testing:
+
+1. **Service worker removed.** The original design forwarded captured audio bytes from the content script to the service worker (which would call `chrome.downloads.download`). Chrome's MV3 runtime messaging has a long-standing quirk where `ArrayBuffer` values arrive at the service worker as plain objects (`{0: byte, 1: byte, ...}`) instead of real `ArrayBuffer`s, breaking the `instanceof` check. The fix: skip the SW entirely and trigger the file save via a hidden `<a download>` click in the content script. The `downloads` permission was removed accordingly.
+
+2. **Audio capture path changed from `fetch.tee()` to `URL.createObjectURL` hook.** Network inspection revealed that Gemini doesn't deliver TTS via a fetchable audio response. Instead, it constructs a `Blob` in JS (from data arriving via some other channel — probably XHR with a non-audio content-type) and mints a `blob:https://gemini.google.com/<uuid>` URL for the `<audio>` element. Intercepting `URL.createObjectURL` lets us tap directly into the Blob the moment it's registered, before the audio element ever loads from it. A poll-based fallback covers the case where the Blob URL was minted before our arm flag was set.
+
+3. **Playback suppression layered defense added.** Initial mute-only suppression still let audio play (silently) — and unmuting after capture made it suddenly audible. Added: (a) global `HTMLMediaElement.prototype.play` patch that returns `Promise.resolve()` while armed (short-circuits playback at the API boundary, no race with element creation), (b) `autoplay = false` on element detection, (c) `pause()` before `unmute()` in `clearArm()` so any in-flight playback is stopped before sound is restored.
+
+Net result: the implementation is simpler than the design — three execution contexts collapsed to two (no SW), and the capture mechanism observes a creation event (`createObjectURL`) instead of mutating request behavior. Permissions footprint dropped from `["downloads"]` to nothing (just host_permissions for gemini.google.com).
